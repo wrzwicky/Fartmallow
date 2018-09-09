@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+    [Tooltip("Player movement speed.")]
     public float speed = 10;
+    [Tooltip("Player jump speed and direction.")]
     public Vector3 jumpDir = new Vector3(0, 10, 0);
 
     CharacterController myCC;
     Rigidbody myRB;
+    private Vector3 lastLookDir;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         myCC = GetComponent<CharacterController>();
         myRB = GetComponent<Rigidbody>();
     }
@@ -36,5 +39,15 @@ public class PlayerController : MonoBehaviour {
             if(myRB.velocity.y == 0)
                 myRB.AddForce(jumpDir, ForceMode.Impulse);
         }
+
+        // rotate to face dir of motion
+        Vector3 dir = myRB.velocity;
+        dir.y = 0;
+        if(dir.sqrMagnitude > 0)
+        {
+            lastLookDir = dir;
+        }
+        gameObject.transform.Find("Body").rotation =
+            Quaternion.Slerp(gameObject.transform.Find("Body").rotation, Quaternion.LookRotation(lastLookDir), 0.20f);
     }
 }
