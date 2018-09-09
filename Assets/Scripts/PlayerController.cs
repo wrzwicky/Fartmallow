@@ -22,8 +22,13 @@ public class PlayerController : MonoBehaviour {
         float up = Input.GetAxis("Vertical");
 
         Vector3 move = new Vector3(rt, 0, up);
-        //myCC.SimpleMove(move * speed);
-        myRB.AddForce(move * speed);
+        move = Quaternion.Euler(0, -45, 0) * move; //hack so UP points away from camera
+        move *= speed;
+
+        Vector3 vel = myRB.velocity;
+        vel.x = move.x;
+        vel.z = move.z;
+        myRB.velocity = vel;
 
         // jump
         if (Input.GetButtonDown("Jump"))
