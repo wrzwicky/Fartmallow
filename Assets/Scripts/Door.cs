@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,9 @@ public class Door : MonoBehaviour
 
     public bool IsOpen {  get { return m_animator.GetBool(k_openKey); } }
 
+
+    public static Action DoorOpened;
+
 	// Use this for initialization
 	void Awake ()
     {
@@ -28,6 +32,9 @@ public class Door : MonoBehaviour
     {
         m_animator.SetBool(k_openKey, true);
         m_audioSource.Play();
+
+        if (DoorOpened != null)
+            DoorOpened();
     }
 
     public void Close()

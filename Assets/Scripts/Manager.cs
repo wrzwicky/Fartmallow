@@ -1,10 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
     static Manager ms_instance = null;
+
+    [SerializeField]
+    CanvasGroup m_canvasGroup;
+
+
+    GameState m_gameState = GameState.Playing;
+
+
+    public static GameState State {  get { return ms_instance.m_gameState; } }
 
 
 
@@ -16,12 +26,33 @@ public class Manager : MonoBehaviour
             Debug.LogError("Only one instance of the manager is allowed");
         ms_instance = this;
 
+        Door.DoorOpened += OnDoorOpened;
+	}
 
-	}
-	
-	// Update is called once per frame
-	void Update ()
+    private void OnDestroy()
     {
-		
-	}
+        ms_instance = null;
+    }
+
+    private void Update()
+    {
+        if(m_gameState == GameState.Ended)
+        {
+            m_canvasGroup.alpha = 1;
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                m_gameState = GameState.Reloading;
+                UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("Splash");
+            }
+
+        }
+    }
+
+
+
+    private void OnDoorOpened()
+    {
+        m_gameState = GameState.Ended;
+    }
 }

@@ -47,7 +47,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
+        if (Manager.State != GameState.Playing)
+            return;
+        
         // basic movement
         float rt = Input.GetAxis("Horizontal");
         float up = Input.GetAxis("Vertical");

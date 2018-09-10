@@ -32,6 +32,12 @@ public class WormController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (Manager.State != GameState.Playing)
+        {
+            wormRigidBody.velocity = Vector3.zero;
+            return;
+        }
+
         WallDetect();
 
 
@@ -40,6 +46,9 @@ public class WormController : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
+        if (Manager.State != GameState.Playing)
+            return;
+
         animTimer += Time.deltaTime;
 
         if (animTimer > animEndTime)
