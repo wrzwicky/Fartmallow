@@ -20,25 +20,22 @@ public class PlayerController : MonoBehaviour {
     readonly int k_speedKey = Animator.StringToHash("Speed");
 
     private Rigidbody myRB;
-    private CapsuleCollider myCollider;
+    private Collider myCollider;
     private GameObject myBody;
-    private Animator m_animator;
-    private Rigidbody m_rigidbody;
+    private Animator myAnimator;
 
     private Vector3 lastLookDir;
 
 
-    // Use this for initialization
     void Start () {
-        myRB = GetComponent<Rigidbody>();
-        myCollider = GetComponentInChildren<CapsuleCollider>();
-        myBody = gameObject.transform.Find("Body").gameObject;
     }
 
     void Awake()
     {
-        m_animator = GetComponentInChildren<Animator>();
-        m_rigidbody = GetComponent<Rigidbody>();
+        myRB = GetComponent<Rigidbody>();
+        myCollider = GetComponentInChildren<BoxCollider>();
+        myBody = gameObject.transform.Find("Body").gameObject;
+        myAnimator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -56,7 +53,7 @@ public class PlayerController : MonoBehaviour {
         vel.z = move.z;
         myRB.velocity = vel;
 
-        m_animator.SetFloat(k_speedKey, vel.magnitude);
+        myAnimator.SetFloat(k_speedKey, vel.magnitude);
 
         // jump
         if (Input.GetButtonDown("Jump"))
@@ -64,7 +61,7 @@ public class PlayerController : MonoBehaviour {
             if (IsGrounded())
             {
                 myRB.AddForce(jumpDir, ForceMode.Impulse);
-                m_animator.SetTrigger(k_jumpKey);
+                myAnimator.SetTrigger(k_jumpKey);
             }
         }
 
@@ -73,7 +70,7 @@ public class PlayerController : MonoBehaviour {
         {
             if (currentCalories >= 1)
             {
-                m_animator.SetTrigger(k_fartKey);
+                myAnimator.SetTrigger(k_fartKey);
 
                 currentCalories--;
                 BeSize();
@@ -108,8 +105,10 @@ public class PlayerController : MonoBehaviour {
 
     private void OnCollisionEnter(Collision other)
     {
+        //Debug.Log("y-velocity: " + myRB.velocity.y);
         IsFood food = other.gameObject.GetComponent<IsFood>();
-        if (food)// && !IsGrounded())
+        // I guess 'down' is y>0
+        if (food && myRB.velocity.y > 0.01)
         {
             currentCalories += food.calories;
             food.BeEaten();
