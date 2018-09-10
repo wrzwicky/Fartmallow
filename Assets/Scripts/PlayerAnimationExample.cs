@@ -13,6 +13,7 @@ public class PlayerAnimationExample : MonoBehaviour
 
     Animator m_animator;
     Rigidbody m_rigidbody;
+    ParticleSystem m_particleSystem;
 
     float m_forward = 0f;
 
@@ -21,6 +22,7 @@ public class PlayerAnimationExample : MonoBehaviour
     {
         m_animator = GetComponentInChildren<Animator>();
         m_rigidbody = GetComponent<Rigidbody>();
+        m_particleSystem = GetComponentInChildren<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -44,6 +46,7 @@ public class PlayerAnimationExample : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Return))
         {
             m_animator.SetTrigger(k_fartKey);
+            m_particleSystem.Play();
         }
 
         m_animator.SetFloat(k_speedKey, m_forward);
