@@ -7,6 +7,8 @@ public class Manager : MonoBehaviour
 {
     static Manager ms_instance = null;
 
+    public AudioSource victoryJingle;
+
     [SerializeField]
     CanvasGroup m_canvasGroup;
 
@@ -56,6 +58,8 @@ public class Manager : MonoBehaviour
 
     private void OnDoorOpened()
     {
+        if (victoryJingle)
+            victoryJingle.Play();
         m_gameState = GameState.Ended;
     }
 }

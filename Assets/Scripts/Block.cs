@@ -42,13 +42,16 @@ public class Block : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision other)
     {
-        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        PlayerController player = other.gameObject.GetComponent<PlayerController>();
 
-        if(Mathf.Approximately(player.CurrentSize, m_sizeRequirement) || player.currentSize > m_sizeRequirement)
+        if(player)
         {
-            m_pushed = true;
+            if (Mathf.Approximately(player.CurrentSize, m_sizeRequirement) || player.currentSize > m_sizeRequirement)
+            {
+                m_pushed = true;
+            }
         }
     }
 

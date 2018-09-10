@@ -30,8 +30,16 @@ public class Door : MonoBehaviour
 	
 	public void Open()
     {
-        m_animator.SetBool(k_openKey, true);
-        m_audioSource.Play();
+        if (!IsOpen)
+        {
+            m_animator.SetBool(k_openKey, true);
+            m_audioSource.Play();
+            // animator will call DoorFinishedOpening
+        }
+    }
+
+    public void DoorFinishedOpening()
+    {
 
         if (DoorOpened != null)
             DoorOpened();
