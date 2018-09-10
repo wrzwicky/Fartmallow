@@ -677,11 +677,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1127013823508818, guid: 2940b75b378457d44af02e8337c73433, type: 2}
       propertyPath: m_Layer
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1470724462787596, guid: 2940b75b378457d44af02e8337c73433, type: 2}
       propertyPath: m_Layer
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4783246700723916, guid: 2940b75b378457d44af02e8337c73433, type: 2}
       propertyPath: m_LocalScale.x
@@ -19710,7 +19710,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1680401322}
   - component: {fileID: 1680401323}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
