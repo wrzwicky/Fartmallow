@@ -36,6 +36,9 @@ public class Manager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
+
         if(m_gameState == GameState.Ended)
         {
             m_canvasGroup.alpha = 1;
