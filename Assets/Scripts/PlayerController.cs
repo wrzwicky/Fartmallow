@@ -15,10 +15,18 @@ public class PlayerController : MonoBehaviour {
     [Tooltip("Critter that appears when player farts.")]
     public GameObject fartWorm;
 
+    readonly int k_jumpKey = Animator.StringToHash("Jump");
+    readonly int k_fartKey = Animator.StringToHash("Fart");
+    readonly int k_speedKey = Animator.StringToHash("Speed");
+
     private Rigidbody myRB;
     private CapsuleCollider myCollider;
     private GameObject myBody;
+    private Animator m_animator;
+    private Rigidbody m_rigidbody;
+
     private Vector3 lastLookDir;
+
 
     // Use this for initialization
     void Start () {
@@ -26,9 +34,15 @@ public class PlayerController : MonoBehaviour {
         myCollider = GetComponentInChildren<CapsuleCollider>();
         myBody = gameObject.transform.Find("Body").gameObject;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    void Awake()
+    {
+        m_animator = GetComponentInChildren<Animator>();
+        m_rigidbody = GetComponent<Rigidbody>();
+    }
+
+    // Update is called once per frame
+    void Update () {
         // basic movement
         float rt = Input.GetAxis("Horizontal");
         float up = Input.GetAxis("Vertical");
@@ -42,11 +56,16 @@ public class PlayerController : MonoBehaviour {
         vel.z = move.z;
         myRB.velocity = vel;
 
+        m_animator.SetFloat(k_speedKey, vel.magnitude);
+
         // jump
         if (Input.GetButtonDown("Jump"))
         {
-            if(IsGrounded())
+            if (IsGrounded())
+            {
                 myRB.AddForce(jumpDir, ForceMode.Impulse);
+                m_animator.SetTrigger(k_jumpKey);
+            }
         }
 
         // fart
@@ -54,8 +73,11 @@ public class PlayerController : MonoBehaviour {
         {
             if (currentCalories >= 1)
             {
+                m_animator.SetTrigger(k_fartKey);
+
                 currentCalories--;
                 BeSize();
+
                 if (fartWorm)
                 {
                     GameObject worm = Instantiate(fartWorm, transform.position+new Vector3(0,1,0), 
