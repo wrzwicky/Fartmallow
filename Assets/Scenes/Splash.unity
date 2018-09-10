@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a555fdd0f69d0274fb0c04ed8e900c8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_sceneToLoad: ScalingTest
+  m_sceneToLoad: Game
   m_animator: {fileID: 1346014305}
   m_audioSource: {fileID: 429747115}
   m_particleSystem: {fileID: 948237198}
