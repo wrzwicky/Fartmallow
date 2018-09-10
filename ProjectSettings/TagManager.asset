@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Food
   - Ground
+  - wall
+  - worm
   layers:
   - Default
   - TransparentFX
@@ -16,9 +18,15 @@ TagManager:
   - 
   - 
   - PostProcessing
+<<<<<<< HEAD
+  - Ground
+  - Wall
+  - Worm
+=======
   - Key
   - Hero
   - 
+>>>>>>> 625a94e16eb748a662200e1611494e825591fca3
   - 
   - 
   - 
