@@ -15,20 +15,31 @@ public class PlayerController : MonoBehaviour {
     [Tooltip("Critter that appears when player farts.")]
     public GameObject fartWorm;
 
+    readonly int k_jumpKey = Animator.StringToHash("Jump");
+    readonly int k_fartKey = Animator.StringToHash("Fart");
+    readonly int k_speedKey = Animator.StringToHash("Speed");
+
     private Rigidbody myRB;
-    private CapsuleCollider myCollider;
+    private Collider myCollider;
     private GameObject myBody;
+    private Animator myAnimator;
+
     private Vector3 lastLookDir;
 
-    // Use this for initialization
+
     void Start () {
-        myRB = GetComponent<Rigidbody>();
-        myCollider = GetComponentInChildren<CapsuleCollider>();
-        myBody = gameObject.transform.Find("Body").gameObject;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    void Awake()
+    {
+        myRB = GetComponent<Rigidbody>();
+        myCollider = GetComponentInChildren<BoxCollider>();
+        myBody = gameObject.transform.Find("Body").gameObject;
+        myAnimator = GetComponentInChildren<Animator>();
+    }
+
+    // Update is called once per frame
+    void Update () {
         // basic movement
         float rt = Input.GetAxis("Horizontal");
         float up = Input.GetAxis("Vertical");
@@ -42,11 +53,16 @@ public class PlayerController : MonoBehaviour {
         vel.z = move.z;
         myRB.velocity = vel;
 
+        myAnimator.SetFloat(k_speedKey, vel.magnitude);
+
         // jump
         if (Input.GetButtonDown("Jump"))
         {
-            if(IsGrounded())
+            if (IsGrounded())
+            {
                 myRB.AddForce(jumpDir, ForceMode.Impulse);
+                myAnimator.SetTrigger(k_jumpKey);
+            }
         }
 
         // fart
@@ -54,8 +70,11 @@ public class PlayerController : MonoBehaviour {
         {
             if (currentCalories >= 1)
             {
+                myAnimator.SetTrigger(k_fartKey);
+
                 currentCalories--;
                 BeSize();
+
                 if (fartWorm)
                 {
                     GameObject worm = Instantiate(fartWorm, transform.position+new Vector3(0,1,0), 
@@ -86,8 +105,10 @@ public class PlayerController : MonoBehaviour {
 
     private void OnCollisionEnter(Collision other)
     {
+        //Debug.Log("y-velocity: " + myRB.velocity.y);
         IsFood food = other.gameObject.GetComponent<IsFood>();
-        if (food)// && !IsGrounded())
+        // I guess 'down' is y>0
+        if (food && myRB.velocity.y > 0.01)
         {
             currentCalories += food.calories;
             food.BeEaten();
