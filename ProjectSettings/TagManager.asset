@@ -4,9 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Food
   - Ground
-  - wall
+  - Food
   - worm
   layers:
   - Default
@@ -17,16 +16,10 @@ TagManager:
   - UI
   - 
   - 
-  - PostProcessing
-<<<<<<< HEAD
   - Ground
   - Wall
-  - Worm
-=======
-  - Key
-  - Hero
   - 
->>>>>>> 625a94e16eb748a662200e1611494e825591fca3
+  - 
   - 
   - 
   - 

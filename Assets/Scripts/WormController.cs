@@ -6,15 +6,24 @@ public class WormController : MonoBehaviour
 {
     [SerializeField]
     private AnimationCurve wormAnimation;
+
     [SerializeField]
     private Rigidbody wormRigidBody;
+
     [SerializeField]
-    private float rayLength, animTimer, animEndTime, speedAdjustment;
+    private float rayLength;
+
+    [SerializeField]
+    private float speedAdjustment;
+
     [SerializeField]
     LayerMask wallLayerMask;
 
-	// Use this for initialization
-	void Start ()
+    private float animTimer;
+    private float animEndTime;
+
+    // Use this for initialization
+    void Start ()
     {
         wormRigidBody = GetComponent<Rigidbody>();
 
@@ -25,41 +34,38 @@ public class WormController : MonoBehaviour
     {
         WallDetect();
 
-        animTimer += Time.deltaTime;
 
-        if (animTimer > animEndTime)
-        {
-            animTimer = 0f;
-        }
     }
 
     // Update is called once per frame
     void Update ()
     {
+        animTimer += Time.deltaTime;
+
+        if (animTimer > animEndTime)
+            animTimer = 0f;
+
         Move();
 	}
 
     private void WallDetect()
     {
-        RaycastHit forwardHit;
-        RaycastHit leftHit;
-        RaycastHit rightHit;
-
-        if (Physics.Raycast(transform.position, -transform.right, out leftHit, wallLayerMask) && Physics.Raycast(transform.position, transform.right, out rightHit, wallLayerMask))
+        if (Physics.Raycast(transform.position, -transform.right, rayLength, wallLayerMask)
+            && Physics.Raycast(transform.position, transform.right, rayLength, wallLayerMask))
         {
-            transform.Rotate(Vector3.up , Random.Range(120, -120));
+            transform.Rotate(Vector3.up, Random.Range(120, -120));
         }
-
-        else if (Physics.Raycast(transform.position, transform.forward, out forwardHit, wallLayerMask));
+        else
+        if (Physics.Raycast(transform.position, transform.forward, rayLength, wallLayerMask))
         {
-            transform.Rotate(Vector3.up, Random.Range (120, -120));
+            transform.Rotate(Vector3.up, Random.Range(120, -120));
         }
     }
 
     private void Move()
     {
-        float speed = wormAnimation.Evaluate(animTimer) * speedAdjustment;
+        float speed = wormAnimation.Evaluate(animTimer);
 
-        wormRigidBody.velocity = transform.forward * speed;
+        wormRigidBody.velocity = transform.forward * (speed * speedAdjustment);
     }
 }
