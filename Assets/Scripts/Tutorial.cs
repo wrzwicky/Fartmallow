@@ -70,7 +70,7 @@ public class Tutorial : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerController player = other.gameObject.GetComponent<PlayerController>();
+        PlayerController player = other.gameObject.GetComponentInParent<PlayerController>();
 
         if (player && !m_shown)
         {
