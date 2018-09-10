@@ -10,6 +10,7 @@ public class Door : MonoBehaviour
     bool m_requiresKey = false;
 
     Animator m_animator;
+    AudioSource m_audioSource;
     
     public bool RequiresKey {  get { return m_requiresKey; } }
 
@@ -19,11 +20,14 @@ public class Door : MonoBehaviour
 	void Awake ()
     {
         m_animator = GetComponent<Animator>();
-	}
+        m_audioSource = GetComponent<AudioSource>();
+
+    }
 	
 	public void Open()
     {
         m_animator.SetBool(k_openKey, true);
+        m_audioSource.Play();
     }
 
     public void Close()
