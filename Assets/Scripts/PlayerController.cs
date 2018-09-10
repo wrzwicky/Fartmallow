@@ -29,6 +29,11 @@ public class PlayerController : MonoBehaviour {
     // Hold last movement dir so model finishes rotating properly when not moving.
     private Vector3 lastLookDir;
 
+    private bool m_hasKey = false;
+
+    public float CurrentSize {  get { return currentSize; } }
+
+    public bool HasKey {  get { return m_hasKey; } }
 
     void Start () {
     }
@@ -48,7 +53,7 @@ public class PlayerController : MonoBehaviour {
         float up = Input.GetAxis("Vertical");
 
         Vector3 move = new Vector3(rt, 0, up);
-        move = Quaternion.Euler(0, -45, 0) * move; //hack so UP points away from camera
+        move = Quaternion.Euler(0, -90, 0) * move; //hack so UP points away from camera
         move *= speed;
 
         Vector3 vel = myRB.velocity;
@@ -83,20 +88,52 @@ public class PlayerController : MonoBehaviour {
         }
         // continually rotate toward last movement vector
         myBody.transform.rotation =
-            Quaternion.Slerp(myBody.transform.rotation, Quaternion.LookRotation(lastLookDir), 0.20f);
+             Quaternion.Slerp(myBody.transform.rotation, Quaternion.LookRotation(lastLookDir), 0.20f);
     }
 
-    private void OnCollisionEnter(Collision other)
+    //private void OnCollisionEnter(Collision other)
+    //{
+    //    //Debug.Log("y-velocity: " + myRB.velocity.y);
+    //    IsFood food = other.gameObject.GetComponent<IsFood>();
+    //    // I guess 'down' is y>0
+    //    if (food && myRB.velocity.y > 0.01)
+    //    {
+    //        currentCalories += food.calories;
+    //        food.BeEaten();
+    //        BeSize();
+    //    }
+    //}
+
+    private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("y-velocity: " + myRB.velocity.y);
         IsFood food = other.gameObject.GetComponent<IsFood>();
         // I guess 'down' is y>0
-        if (food && myRB.velocity.y > 0.01)
+        if (food &&  transform.position.y > 0.1f)//  myRB.velocity.y > 0.01)
         {
             currentCalories += food.calories;
             food.BeEaten();
             BeSize();
         }
+
+        Key key = other.gameObject.GetComponent<Key>();
+        if (key)
+            m_hasKey = true;
+
+        Door door = other.gameObject.GetComponent<Door>();
+        if (door && m_hasKey)
+            door.Open();
+
+    }
+
+    public void Feed()
+    {
+        currentCalories += 1;
+        BeSize();
+    }
+
+    public void GiftKey()
+    {
+        m_hasKey = true;
     }
 
     // 'true' if player is standing on ground
@@ -146,16 +183,16 @@ public class PlayerController : MonoBehaviour {
                 GameObject worm = Instantiate(fartWorm, myFartCloud.transform.position,
                     Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0));
 
-                // random toss dir
-                float pitch = UnityEngine.Random.Range(180+30, 180+60);
-                float yaw = UnityEngine.Random.Range(-30, 30);
-                float power = UnityEngine.Random.Range(10, 20);
+                //// random toss dir
+                //float pitch = UnityEngine.Random.Range(180+30, 180+60);
+                //float yaw = UnityEngine.Random.Range(-30, 30);
+                //float power = UnityEngine.Random.Range(10, 20);
 
-                Vector3 launchDir = Quaternion.AngleAxis(yaw, myBody.transform.up)
-                    * Quaternion.AngleAxis(pitch, myBody.transform.right)
-                    * myBody.transform.forward;
+                //Vector3 launchDir = Quaternion.AngleAxis(yaw, myBody.transform.up)
+                //    * Quaternion.AngleAxis(pitch, myBody.transform.right)
+                //    * myBody.transform.forward;
 
-                worm.GetComponent<Rigidbody>().AddForce(launchDir * power, ForceMode.Impulse);
+                //worm.GetComponent<Rigidbody>().AddForce(launchDir * power, ForceMode.Impulse);
             }
         }
     }

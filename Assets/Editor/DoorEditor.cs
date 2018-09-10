@@ -10,6 +10,9 @@ public class DoorEditor : Editor
 
     public override void OnInspectorGUI()
     {
+
+        base.OnInspectorGUI();
+
         Door door = (Door)target;
 
         if(Application.isPlaying)

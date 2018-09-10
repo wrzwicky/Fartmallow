@@ -19,11 +19,11 @@ TagManager:
   - Ground
   - Wall
   - Key
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Worm
+  - Player
+  - Door
+  - Block
+  - WormBlocker
   - 
   - 
   - 
