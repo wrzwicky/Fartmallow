@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Ground
   - Food
+  - worm
   layers:
   - Default
   - TransparentFX
@@ -14,9 +16,9 @@ TagManager:
   - UI
   - 
   - 
-  - PostProcessing
-  - 
-  - 
+  - Ground
+  - Wall
+  - Key
   - 
   - 
   - 

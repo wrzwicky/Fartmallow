@@ -11,9 +11,13 @@ public class PlayerAnimationExample : MonoBehaviour
     [SerializeField]
     float m_speed = 1f;
 
+    [SerializeField]
+    AudioSource m_fartSound;
+
     Animator m_animator;
     Rigidbody m_rigidbody;
     ParticleSystem m_particleSystem;
+
 
     float m_forward = 0f;
 
@@ -47,6 +51,7 @@ public class PlayerAnimationExample : MonoBehaviour
         {
             m_animator.SetTrigger(k_fartKey);
             m_particleSystem.Play();
+            m_fartSound.Play();
         }
 
         m_animator.SetFloat(k_speedKey, m_forward);
